@@ -98,7 +98,7 @@ export const deleteBlog = async (req, res, next) => {
          blog = await Blog.findByIdAndRemove(id).populate('user')
          await blog.user.blogs.pull(blog)
          await blog.user.save()
-         res.status(200).json({message : "blog deleted sucs"})
+         res.status(200).json({message : "blog deleted successfully"})
     } catch (error) {
         console.log(error);
     }

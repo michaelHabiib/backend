@@ -1,6 +1,7 @@
 import User from "../modal/User";
 import bcrypt from 'bcryptjs'
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken"
 const ObjectId = mongoose.Types.ObjectId
 
 export const GetAllUsers = async (req, res, next) =>{
@@ -11,7 +12,7 @@ export const GetAllUsers = async (req, res, next) =>{
         console.log(error);
     }
     if(!users){
-        res.status(404).json({message : "no Users Found"})
+        res.status(404).json({message : "No Users Found"})
     }
     return res.status(200).json({users})
 }
@@ -60,10 +61,13 @@ export const login = async (req, res, next) =>{
 
     const isPasswordCorrect = bcrypt.compareSync(password,existingUser.password)
     if(!isPasswordCorrect){
-        return res.status(400).json({message : 'incoreect password'})
+        return res.status(400).json({message : 'incorrect password'})
     }
     if(isPasswordCorrect){
-        return res.status(200).json({message : 'you are logedin sucs'})
+        let jwtSecretKey = 'miko30121997'
+        let data = {existingUser}
+        const token = jwt.sign(data, jwtSecretKey);
+        return res.status(200).json({token})
     }
 
 }
@@ -71,7 +75,7 @@ export const login = async (req, res, next) =>{
 export const DeleteAllUSers = async (req, res, next)=> {
     try {
         await User.deleteMany()
-        res.status(200).json({message : 'All Users has been deleted sucs'})
+        res.status(200).json({message : 'All Users has been deleted successfully'})
     } catch (error) {
         console.log(error);
     }
@@ -89,7 +93,7 @@ export const DeleteUser = async (req, res, next)=> {
             res.status(200).json({message : 'can\'t Find User with this ID'})
         }else{
             await user.deleteOne()
-            res.status(200).json({message : 'User Deleted Sucs'})
+            res.status(200).json({message : 'User Deleted successfully'})
         }
     } catch (error) {
         console.log(error);
