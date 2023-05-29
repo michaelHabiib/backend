@@ -1,4 +1,5 @@
 import User from "../modal/User";
+import Blog from "../modal/Blog";
 import bcrypt from 'bcryptjs'
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken"
@@ -49,6 +50,11 @@ export const signup =  async (req, res, next)=>{
 export const login = async (req, res, next) =>{
     const {email, password} = req.body 
     let existingUser
+    let name
+    let NewBlog = {}
+    let newBlogs
+    let blogs
+    let id
     try {
         existingUser = await User.findOne({email})
     } catch (error) {
@@ -65,7 +71,10 @@ export const login = async (req, res, next) =>{
     }
     if(isPasswordCorrect){
         let jwtSecretKey = 'miko30121997'
-        let data = {existingUser}
+        name = existingUser.name
+        blogs = existingUser.blogs
+        newBlogs = await Blog.find({ _id: { $in: blogs } }) 
+        const data = {name,newBlogs}
         const token = jwt.sign(data, jwtSecretKey);
         return res.status(200).json({token})
     }
@@ -111,7 +120,7 @@ export const getBlogsofUser = async (req, res, next) => {
         user = await User.findById(id)
         blogs = user.blogs
         if(!user){
-            res.status(200).json({message : 'can\'t Find User with this ID'})
+            return res.status(200).json({message : 'can\'t Find User with this ID'})
         }
         return res.status(200).json({blogs})
     } catch (error) {
