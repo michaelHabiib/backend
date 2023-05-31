@@ -127,7 +127,7 @@ export const getBlogsofUser = async (req, res, next) => {
             return res.status(200).json({message : 'can\'t Find User with this ID'})
         }else if(user) {
             newBlogs = await Blog.find({ _id: { $in: blogs } }) 
-            return res.status(200).json({newBlogs})
+            return res.status(200).json(newBlogs)
         }
 
     } catch (error) {
