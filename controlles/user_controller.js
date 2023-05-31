@@ -119,13 +119,17 @@ export const getBlogsofUser = async (req, res, next) => {
     }
     let user
     let blogs
+    let newBlogs
     try {
         user = await User.findById(id)
         blogs = user.blogs
         if(!user){
             return res.status(200).json({message : 'can\'t Find User with this ID'})
+        }else if(user) {
+            newBlogs = await Blog.find({ _id: { $in: blogs } }) 
+            return res.status(200).json({newBlogs})
         }
-        return res.status(200).json({blogs})
+
     } catch (error) {
         console.log(error);
     }
