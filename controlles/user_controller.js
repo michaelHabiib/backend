@@ -129,9 +129,38 @@ export const getBlogsofUser = async (req, res, next) => {
             newBlogs = await Blog.find({ _id: { $in: blogs } }) 
             return res.status(200).json(newBlogs)
         }
-
     } catch (error) {
         console.log(error);
     }
-
+}
+// export const DeleteUserBlogs = async (req,res,next) =>{
+//     const UserID = req.params.Userid
+//     const BlogID = req.parama.BlogID
+//     if(!ObjectId.isValid(UserID)){
+//         return res.status(500).json({message : 'unvalid User ID'})
+//     }else if(!ObjectId.isValid(BlogID)){
+//         return res.status(500).json({message : 'unvalid User ID'})
+//     }
+//     let user
+//     try {
+//         user =  await User.findById(UserID)
+//         user.blogs
+//         return res.status(200).json(user)
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+export const DeleteUserBlog = async (req,res,next) =>{
+    // const UserID = req.params.Userid
+    const BlogID = req.parama.BlogID
+    if(!ObjectId.isValid(BlogID)){
+        return res.status(500).json({message : 'unvalid User ID'})
+    }
+    let blog
+    try {
+        blog =  await Blog.findByIdAndDelete(BlogID)
+        return res.status(200).json({message : 'Blog Deleted Successfully'})
+    } catch (error) {
+        console.log(error);
+    }
 }
