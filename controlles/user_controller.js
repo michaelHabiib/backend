@@ -151,7 +151,6 @@ export const getBlogsofUser = async (req, res, next) => {
 //     }
 // }
 export const DeleteUserBlog = async (req,res,next) =>{
-    // const UserID = req.params.Userid
     const BlogID = req.parama.BlogID
     if(!ObjectId.isValid(BlogID)){
         return res.status(500).json({message : 'unvalid User ID'})
