@@ -151,14 +151,19 @@ export const getBlogsofUser = async (req, res, next) => {
 //     }
 // }
 export const DeleteUserBlog = async (req,res,next) =>{
-    const BlogID = req.parama.BlogID
-    if(!ObjectId.isValid(BlogID)){
+    const id = req.parama.id
+    if(!ObjectId.isValid(id)){
         return res.status(500).json({message : 'unvalid User ID'})
     }
-    let blog
     try {
-        blog =  await Blog.findByIdAndDelete(BlogID)
-        return res.status(200).json({message : 'Blog Deleted Successfully'})
+        const blog = await Blog.findById(id)
+        if(!blog){
+            return res.status(404).json({message : 'Blog not Found'})
+        }
+        if(blog){
+            await blog.deleteOne()
+            return res.status(200).json({message : 'Blog Deleted Successfully'})
+        }
     } catch (error) {
         console.log(error);
     }

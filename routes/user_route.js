@@ -8,5 +8,5 @@ userRouter.post('/login', login)
 userRouter.delete('/', DeleteAllUSers)
 userRouter.delete('/:id', DeleteUser)
 userRouter.get('/:id', getBlogsofUser)
-userRouter.delete('/note/:BlogID', DeleteUserBlog)
+userRouter.delete('/note/:id', DeleteUserBlog)
 export default userRouter   
